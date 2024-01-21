@@ -20,9 +20,10 @@ router.post('/createList', async function(req, res, next) {
   });
 
   connection.connect();
+  console.log(req.body);
 
   try {
-    const sql = "INSERT INTO lists (owner, name) values (1, 'Test List')";
+    const sql = `INSERT INTO lists (owner, name) values (1, '${req.body.listName}')`;
     await connection.query(sql);
     res.sendStatus(200);
     connection.end();
