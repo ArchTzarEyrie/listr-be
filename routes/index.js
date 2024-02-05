@@ -1,24 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql2/promise');
+var sqlConnector = require('../database/mysqlConnector');
 
-router.use((req, res, next) => {
-  res.set({
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin",
-    "Access-Control-Allow-Methods": "POST, PUT, GET, OPTIONS, DELETE"
-  });
-  next();
-});
-
-router.post('/createList', async function(req, res, next) {
-  const connection = await mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'myc00lP4s5word',
-    database: 'listr'
-  });
-
+router.post('/createList', async function(req, res) {
+  const connection = await sqlConnector.getConnection();
   connection.connect();
   console.log(req.body);
 

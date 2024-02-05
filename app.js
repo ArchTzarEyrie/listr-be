@@ -19,6 +19,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req, res, next) => {
+  res.set({
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin",
+    "Access-Control-Allow-Methods": "POST, PUT, GET, OPTIONS, DELETE"
+  });
+  next();
+});
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
