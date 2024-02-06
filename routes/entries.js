@@ -8,7 +8,7 @@ router.post('/create', async function(req, res) {
   connection.connect();
 
   try {
-    const sql = `INSERT INTO users (username) values ('${req.body.username}')`;
+    const sql = `INSERT INTO entries (content, creator, listId, link) values ('${req.body.content}, ${req.body.creator}, ${req.body.listId}, ${req.body.link}')`;
     await connection.query(sql);
     res.sendStatus(200);
     connection.end();
