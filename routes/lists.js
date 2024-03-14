@@ -18,4 +18,21 @@ router.post('/create', async function(req, res) {
   }
 });
 
+router.get('/:userId', async function(req, res) {
+    const connection = await sqlConnector.getConnection();
+
+    connection.connect();
+
+    try {
+        const sql = `SELECT * from lists where owner = ${req.params.userId}`;
+        const [result, fields] = await connection.query(sql);
+        res.send(result);
+        connection.end();
+    } catch (err) {
+        res.send({errorMessage: err})
+        console.log(err);
+        connection.end();
+    }
+})
+
 module.exports = router;
