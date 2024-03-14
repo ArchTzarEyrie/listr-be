@@ -32,4 +32,19 @@ router.get('/:listId', async function(req, res) {
   connection.end();
 });
 
+router.put('/update/:entryId', async function(req, res) {
+  const connection = await sqlConnector.getConnection();
+
+  connection.connect();
+
+  try {
+    const sql = `UPDATE entries SET content = '${req.body.content}', link = '${req.body.link}' WHERE id = ${req.params.entryId} LIMIT 1`;
+    const [result, fields] = await connection.query(sql);
+    res.send({insertId: result.insertId});
+  } catch (err) {
+    console.log(err);
+  }
+  connection.end();
+})
+
 module.exports = router;
