@@ -45,6 +45,26 @@ router.put('/update/:entryId', async function(req, res) {
     console.log(err);
   }
   connection.end();
+});
+
+router.delete('/:entryId', async function(req, res) {
+  const connection = await sqlConnector.getConnection();
+
+  connection.connect();
+
+  try {
+    const sql = `DELETE from entries WHERE id = ${req.params.entryId} LIMIT 1`;
+    const [result, fields] = await connection.query(sql);
+    if (result.affectedRows === 1) {
+      res.sendStatus(200);
+    } else {
+      res.send({errorMessage: 'Entry not deleted from database'});
+    }
+  } catch (err) {
+    console.log(err);
+    res.send({errorMessage: 'Unknown delete error, check server logs'});
+  }
+  connection.end();
 })
 
 module.exports = router;
