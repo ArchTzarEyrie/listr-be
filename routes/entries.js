@@ -25,7 +25,9 @@ router.get('/:listId', async function(req, res) {
   try {
     const sql = `SELECT * FROM entries WHERE listId = ${req.params.listId}`;
     const [rows, fields] = await connection.query(sql);
-    res.send(rows);
+    const sql2 = `SELECT name from lists WHERE id = ${req.params.listId}`;
+    const [rows2, fields2] = await connection.query(sql2);
+    res.send({rows, listName: rows2[0].name});
   } catch (err) {
     console.log(err);
   }
